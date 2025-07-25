@@ -1,93 +1,122 @@
 # Giới thiệu & Đặt vấn đề
+
 ## Tại sao cần Clean Architecture?
-### Tránh spaghetti code
-    Khi project càng lớn, việc trộn lẫn logic nghiệp vụ, truy vấn database và xử lý giao diện trong cùng 1 class khiến code trở nên rối rắm, khó đọc, khó debug – hay còn gọi là spaghetti code.
 
-### Dễ bảo trì và mở rộng
+Khi phần mềm ngày càng phức tạp, việc quản lý codebase trở nên khó khăn nếu không có cấu trúc rõ ràng. Clean Architecture được giới thiệu như một giải pháp để xử lý các vấn đề thường gặp trong phát triển phần mềm lớn:
 
-Clean Architecture tách riêng các phần trong hệ thống. Nhờ đó:
-    • Khi thêm tính năng mới hoặc sửa lỗi, chỉ cần chạm vào đúng tầng liên quan.
-    • Giảm rủi ro “sửa chỗ này, chết chỗ kia”.
+### 1. Tránh spaghetti code
+Khi project càng lớn, logic nghiệp vụ, truy vấn database và xử lý giao diện thường bị trộn lẫn trong cùng một class. Điều này khiến code trở nên rối rắm, khó đọc và khó bảo trì.
 
-### Tăng khả năng kiểm thử (Testability)
-    • Logic nghiệp vụ (Use Cases) không phụ thuộc vào Database hay UI → có thể test độc lập.
-    • Viết unit test dễ dàng, ít phải mock, tốc độ nhanh.
+### 2. Dễ bảo trì và mở rộng
+Clean Architecture giúp phân tách rõ ràng các phần trong hệ thống. Nhờ đó:
+- Khi thêm tính năng hoặc sửa lỗi, chỉ cần thay đổi đúng tầng liên quan.
+- Giảm thiểu rủi ro thay đổi một chỗ làm ảnh hưởng đến chỗ khác.
 
-### Giảm phụ thuộc vào công nghệ và framework
-    • Logic cốt lõi nằm ở “vùng sạch”, không phụ thuộc Entity Framework, ASP.NET hay bất kỳ công nghệ cụ thể nào.
-    • Muốn đổi framework, UI, hay database cũng dễ dàng hơn nhiều.
+### 3. Tăng khả năng kiểm thử (Testability)
+- Logic nghiệp vụ (Use Cases) không phụ thuộc vào database hay UI → dễ kiểm thử độc lập.
+- Viết unit test đơn giản hơn, ít cần mock, tốc độ nhanh hơn.
 
-### Tăng độ bền vững cho dự án
-    • Khi team thay người, khi công nghệ thay đổi, business logic vẫn được bảo toàn.
-    • Hệ thống dễ “sống lâu – khỏe mạnh – ít drama”.
+### 4. Giảm phụ thuộc vào công nghệ và framework
+- Logic cốt lõi nằm ở tầng riêng biệt, không phụ thuộc vào ASP.NET, Entity Framework, hay bất kỳ công nghệ cụ thể nào.
+- Có thể thay đổi UI, database hoặc framework mà không ảnh hưởng đến business logic.
 
-### Giúp làm việc nhóm hiệu quả hơn
-    • Mỗi team hoặc dev đảm nhận phần việc rõ ràng: người lo UI, người lo logic, người lo database.
-    • Dễ chia task, dễ review code, ít đụng nhau.
+### 5. Tăng độ bền vững cho dự án
+- Khi team thay người hoặc thay đổi công nghệ, logic nghiệp vụ vẫn được bảo toàn.
+- Hệ thống có thể tồn tại và phát triển lâu dài mà không bị "nát" theo thời gian.
 
-## Vấn đề của “monolith spaghetti code”
-### Không có ranh giới rõ ràng giữa các phần
-    • Giao diện (UI), xử lý nghiệp vụ (logic), và truy cập dữ liệu (data access) nằm lẫn lộn trong cùng một lớp hoặc cùng một project.
-    • Khi sửa lỗi hoặc thêm tính năng, rất khó xác định đúng vị trí cần chỉnh sửa. Việc sửa một chỗ có thể gây lỗi ở chỗ khác.
+### 6. Hỗ trợ làm việc nhóm hiệu quả hơn
+- Dễ phân chia công việc theo tầng: UI, logic nghiệp vụ, data access.
+- Giảm xung đột code, dễ quản lý, dễ code review.
 
-### Khó bảo trì và mở rộng
-    • Khi hệ thống phát triển lớn hơn, việc tìm hiểu, hiểu và thay đổi code trở nên phức tạp.
-    • Việc thêm tính năng mới có thể mất nhiều thời gian do lo ngại ảnh hưởng đến các phần liên quan.
+---
 
-### Code phụ thuộc lẫn nhau chằng chịt
-    • Các thành phần trong hệ thống gọi lẫn nhau, dẫn đến sự phụ thuộc vòng lặp (circular dependency).
-    • Điều này khiến việc tái sử dụng hoặc tách biệt các module là rất khó, gần như không thể.
+## Vấn đề của Monolith Spaghetti Code
 
-### Không thể kiểm thử độc lập
-    • Logic nghiệp vụ phụ thuộc trực tiếp vào tầng dữ liệu hoặc UI, dẫn đến khó viết unit test.
-    • Việc kiểm thử thường phải thực hiện toàn hệ thống, không tách rời được từng phần nhỏ.
+Hệ thống monolith được xây dựng không có kiến trúc rõ ràng rất dễ rơi vào tình trạng "spaghetti code", với hàng loạt vấn đề đi kèm:
 
-### Khó áp dụng DevOps hoặc CI/CD
-    • Kiến trúc monolith không hỗ trợ việc triển khai riêng từng phần của hệ thống.
-    • Mỗi lần cập nhật phải build và deploy toàn bộ hệ thống, tốn thời gian và dễ sinh lỗi.
+### 1. Không có ranh giới rõ ràng giữa các phần
+- Giao diện, logic nghiệp vụ và truy cập dữ liệu nằm lẫn lộn trong cùng một lớp.
+- Khi thay đổi một phần, rất khó kiểm soát ảnh hưởng đến các phần còn lại.
 
-### Khó mở rộng đội ngũ phát triển
-    • Khi nhiều người cùng tham gia vào một codebase lớn, không có cấu trúc rõ ràng, dễ gây xung đột, khó quản lý.
-    • Việc onboarding người mới rất mất thời gian vì code khó đọc, thiếu tổ chức.
+### 2. Khó bảo trì và mở rộng
+- Dễ phát sinh lỗi khi sửa hoặc thêm chức năng.
+- Tốn thời gian hiểu code cũ và đánh giá rủi ro thay đổi.
+
+### 3. Code phụ thuộc lẫn nhau chằng chịt
+- Các thành phần gọi qua lại, gây ra phụ thuộc vòng lặp.
+- Khó tách module, khó tái sử dụng.
+
+### 4. Không thể kiểm thử độc lập
+- Logic phụ thuộc trực tiếp vào tầng dữ liệu hoặc UI → khó viết test đơn vị.
+- Phải kiểm thử toàn hệ thống, tốn thời gian và kém ổn định.
+
+### 5. Khó áp dụng DevOps hoặc CI/CD
+- Không thể triển khai từng phần riêng biệt.
+- Mỗi thay đổi yêu cầu build và deploy lại toàn bộ hệ thống, dễ sinh lỗi.
+
+### 6. Khó mở rộng đội ngũ phát triển
+- Nhiều người cùng sửa một codebase rối rắm → xung đột thường xuyên.
+- Dev mới mất nhiều thời gian để hiểu code và làm quen với hệ thống.
 
 # Khái niệm Clean Architecture
-## Định nghĩa (Uncle Bob)
-### Định nghĩa
-Clean Architecture là một mô hình kiến trúc phần mềm được đề xuất bởi Robert C. Martin (hay còn gọi là Uncle Bob), với mục tiêu chính là tổ chức codebase sao cho rõ ràng, tách biệt, dễ hiểu, dễ kiểm thử và dễ mở rộng.
-Nội dung cốt lõi của Clean Architecture bao gồm:
-    • Tách riêng logic nghiệp vụ (business rules) ra khỏi các thành phần phụ thuộc bên ngoài như cơ sở dữ liệu, giao diện người dùng, framework, v.v.
-    • Thiết lập nguyên tắc phụ thuộc một chiều: các tầng bên ngoài có thể phụ thuộc vào tầng bên trong, nhưng không được làm ngược lại.
 
-### Mục tiêu chính
-    • Tăng tính độc lập của logic nghiệp vụ đối với framework, UI, hay database.
-    • Tăng khả năng tái sử dụng và kiểm thử các phần cốt lõi.
-    • Hỗ trợ bảo trì và phát triển lâu dài cho hệ thống.
-    • Cho phép các thành phần thay đổi mà không ảnh hưởng đến toàn bộ hệ thống (ví dụ: thay đổi database hoặc giao diện mà không ảnh hưởng đến logic nghiệp vụ).
+## Định nghĩa (theo Uncle Bob)
 
-### Câu nói nổi tiếng của Uncle Bob:
-"The architecture should tell us about the system, not about the frameworks it uses."
-Tạm dịch: “Kiến trúc phần mềm nên phản ánh bản chất của hệ thống, chứ không phải framework mà nó sử dụng.”
+### 1. Định nghĩa
 
-## Mục tiêu cốt lõi
-### Tách biệt rõ ràng giữa các tầng trong hệ thống
-    • Mỗi tầng có một vai trò riêng: từ business logic, xử lý luồng nghiệp vụ đến tương tác với hệ thống bên ngoài.
-    • Giúp hệ thống dễ hiểu, dễ quản lý và dễ mở rộng.
+**Clean Architecture** là một mô hình kiến trúc phần mềm được đề xuất bởi **Robert C. Martin** (Uncle Bob), với mục tiêu tổ chức hệ thống sao cho:
+- Dễ hiểu  
+- Dễ kiểm thử  
+- Dễ bảo trì  
+- Và có khả năng mở rộng linh hoạt theo thời gian
 
-### Bảo vệ logic nghiệp vụ khỏi ảnh hưởng của công nghệ bên ngoài
-    • Logic nghiệp vụ không phụ thuộc vào framework, database, hay UI.
-    • Có thể thay đổi công nghệ (ví dụ: chuyển từ SQL sang NoSQL) mà không ảnh hưởng đến lõi hệ thống.
+Clean Architecture nhấn mạnh việc:
+- **Tách biệt logic nghiệp vụ (business rules)** ra khỏi các thành phần phụ thuộc như database, UI, framework, hay các thư viện bên ngoài.
+- **Tuân thủ nguyên tắc phụ thuộc một chiều**: các tầng bên ngoài có thể phụ thuộc vào tầng bên trong, nhưng tầng bên trong **không bao giờ được phụ thuộc ngược lại**.
 
-### Dễ dàng kiểm thử (testability)
-    • Vì mỗi tầng độc lập nên có thể kiểm thử từng phần mà không cần setup toàn hệ thống.
-    • Unit test cho logic nghiệp vụ trở nên đơn giản, nhanh và chính xác.
+---
 
-### Hỗ trợ bảo trì và phát triển dài hạn
-    • Khi hệ thống phát triển, kiến trúc rõ ràng giúp tránh "nợ kỹ thuật".
-    • Thay đổi yêu cầu nghiệp vụ không làm ảnh hưởng đến tầng bên ngoài.
+### 2. Mục tiêu chính
 
-### Tăng tính linh hoạt và khả năng tái sử dụng
-    • Các thành phần có thể dễ dàng tái sử dụng trong các ứng dụng khác.
-    • Việc chia nhỏ hệ thống thành các module độc lập giúp tăng khả năng mở rộng theo chiều ngang.
+- Tăng tính **độc lập** của logic nghiệp vụ đối với công nghệ, framework và hạ tầng.
+- Dễ dàng **kiểm thử, bảo trì và tái sử dụng** các thành phần quan trọng trong hệ thống.
+- Hỗ trợ hệ thống **phát triển bền vững và linh hoạt**, có thể thay đổi công nghệ mà không ảnh hưởng đến phần cốt lõi.
+- Giảm rủi ro kỹ thuật và tránh việc hệ thống bị “đóng khung” theo công nghệ ban đầu.
+
+---
+
+### 3. Câu nói nổi tiếng của Uncle Bob:
+
+> **“The architecture should tell us about the system, not about the frameworks it uses.”**
+
+Tạm dịch:
+
+> *“Kiến trúc phần mềm nên phản ánh bản chất của hệ thống, chứ không phải framework mà nó sử dụng.”*
+
+---
+
+## Mục tiêu cốt lõi của Clean Architecture
+
+### 1. Tách biệt rõ ràng giữa các tầng trong hệ thống
+- Mỗi tầng có một vai trò riêng biệt: từ xử lý logic nghiệp vụ đến giao tiếp với bên ngoài.
+- Giúp hệ thống có cấu trúc rõ ràng, dễ đọc, dễ quản lý và dễ nâng cấp.
+
+### 2. Bảo vệ logic nghiệp vụ khỏi công nghệ bên ngoài
+- Logic nghiệp vụ không phụ thuộc vào framework, cơ sở dữ liệu hoặc UI.
+- Việc thay đổi công nghệ (VD: từ SQL sang NoSQL) không ảnh hưởng đến tầng cốt lõi.
+
+### 3. Dễ dàng kiểm thử (Testability)
+- Do mỗi tầng hoạt động độc lập nên có thể kiểm thử từng phần riêng lẻ.
+- Việc viết unit test cho logic nghiệp vụ trở nên đơn giản, nhanh và đáng tin cậy.
+
+### 4. Hỗ trợ bảo trì và phát triển lâu dài
+- Giảm "nợ kỹ thuật" nhờ cấu trúc rõ ràng, có định hướng.
+- Logic nghiệp vụ có thể tiến hóa mà không làm ảnh hưởng đến tầng ngoài.
+
+### 5. Tăng tính tái sử dụng và mở rộng
+- Các module có thể dễ dàng tái sử dụng ở nhiều bối cảnh khác nhau.
+- Hệ thống dễ dàng mở rộng theo chiều ngang bằng cách tách các phần độc lập.
+
 
 # Các tầng (Layers) chính
 ## Entities (Domain Models)
