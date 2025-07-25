@@ -810,14 +810,370 @@ public class OrdersController : ControllerBase
 }
 ```
 
-## Thư viện & template nổi bật (Jason Taylor, Ardalis)
+## Thư viện & Template Clean Architecture nổi bật trong .NET
+
+Để giúp khởi tạo dự án nhanh chóng và đúng cấu trúc Clean Architecture, cộng đồng .NET đã phát triển nhiều **template uy tín, được sử dụng rộng rãi**. Dưới đây là hai cái tên tiêu biểu:
+
+---
+
+### 1. Jason Taylor - Clean Architecture Template
+
+- **Link GitHub:** [github.com/jasontaylordev/CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
+- **Mô tả:** Đây là template Clean Architecture phổ biến nhất trong cộng đồng .NET, được phát triển bởi Jason Taylor (Microsoft MVP).
+- **Tính năng nổi bật:**
+  - Tổ chức solution theo đúng mô hình 4 tầng: `Domain`, `Application`, `Infrastructure`, `WebUI`.
+  - Có sẵn cấu hình DI, validation, MediatR, CQRS, logging,...
+  - Tích hợp sẵn unit test và integration test.
+  - Hỗ trợ dùng với WebAPI, Blazor hoặc Razor Pages.
+- **Cài đặt nhanh:**
+
+```bash
+dotnet new --install Clean.Architecture.Solution.Template
+dotnet new ca-sln -n MyProject
+```
+### 2. Ardalis - Clean Architecture Template
+
+- **Link GitHub:** [github.com/ardalis/CleanArchitecture](https://github.com/ardalis/CleanArchitecture)
+- **Mô tả:** Được phát triển bởi Steve Smith (aka Ardalis) – một chuyên gia nổi tiếng trong cộng đồng .NET và Domain-Driven Design (DDD).
+- **Tính năng nổi bật:**
+  - Áp dụng Clean Architecture kết hợp với DDD và SOLID principles.
+  - Sử dụng kiểu `AggregateRoot`, `DomainEvent`, `Specification Pattern`, v.v.
+  - Tách rõ Application logic và Infrastructure.
+  - Có tích hợp mẫu repository theo interface chuẩn.
+- **Phù hợp với:** các dự án áp dụng DDD sâu hơn, tổ chức domain mạnh mẽ hơn template của Jason Taylor.
+
+---
+
+### 3. Các thư viện hỗ trợ Clean Architecture thường dùng
+
+| Thư viện                 | Công dụng chính                                               |
+|--------------------------|---------------------------------------------------------------|
+| `MediatR`                | Triển khai CQRS / gửi request giữa tầng                      |
+| `FluentValidation`       | Validation theo cách riêng biệt, tách khỏi model             |
+| `AutoMapper`             | Mapping giữa DTO và Entity dễ dàng                           |
+| `Ardalis.Specification`  | Query theo pattern Specification                              |
+| `Serilog` / `NLog`       | Logging linh hoạt                                             |
+
 # Best Practices & Tips
-## Organization: tên project, naming convention
+
+## Organization: Tên project & Naming Convention
+
+### Tên project theo tầng
+
+Đặt tên rõ ràng để phân biệt các tầng trong Clean Architecture. Một số gợi ý đặt tên:
+
+| Layer               | Tên project gợi ý                       |
+|---------------------|------------------------------------------|
+| Entities            | `MyApp.Domain` hoặc `MyApp.Core`        |
+| Use Cases           | `MyApp.Application`                     |
+| Interface Adapters  | `MyApp.WebApi`, `MyApp.Presentation`    |
+| Infrastructure      | `MyApp.Infrastructure`                  |
+| Shared Utilities    | `MyApp.Shared`, `MyApp.Common`          |
+
+### Quy tắc đặt tên (naming convention)
+
+- **Class**: PascalCase (ví dụ: `CreateOrderUseCase`, `OrderService`)
+- **Interface**: Thêm `I` phía trước (ví dụ: `IOrderRepository`, `ILogger`)
+- **Method**: PascalCase (ví dụ: `ExecuteAsync`, `CanBeCancelled`)
+- **Biến**: camelCase (ví dụ: `orderRepository`, `createdAt`)
+- **Thư mục**: PascalCase (ví dụ: `Controllers`, `UseCases`, `Entities`)
+- **Tên file**: Trùng tên class, interface chứa trong đó.
+
+### Tips nhỏ:
+- Tránh tên project kiểu `Project1.Application` – đổi thành tên thực tế của app để dễ maintain.
+- Có thể group chung `Domain` và `Application` nếu dự án nhỏ.
+- Không nhét tất cả vào 1 project duy nhất — tách tầng giúp code dễ đọc, dễ test, dễ quản lý.
+
 ## Cách test từng layer
+
+Việc tách biệt các tầng trong Clean Architecture giúp việc kiểm thử trở nên dễ dàng, rõ ràng và có thể thực hiện theo từng cấp độ như sau:
+
+### 1. Test tầng Entities (Domain Models)
+
+**Mục tiêu:** Kiểm tra các quy tắc nghiệp vụ cốt lõi.
+
+**Loại test:** Unit Test
+
+**Cách test:**
+- Không cần mock bất kỳ thứ gì.
+- Test các phương thức trong entity (như `CanBeCancelled()`, `CalculateTotal()`...).
+
+**Ví dụ:**
+```csharp
+[Fact]
+public void Order_CanBeCancelled_IfWithin24Hours_ReturnsTrue()
+{
+    var order = new Order(DateTime.UtcNow.AddHours(-5));
+    Assert.True(order.CanBeCancelled(DateTime.UtcNow));
+}
+```
+### 2. Use Cases / Application Layer
+
+**Mục tiêu**: Kiểm tra luồng xử lý nghiệp vụ cấp ứng dụng (orchestration logic).
+
+- **Loại test**: Unit Test
+- **Cách test**: Dùng mock repository, service… để isolate logic Use Case.
+- **Kiểm tra thêm**: 
+  - Đầu ra (return)
+  - Exception (nếu rule bị vi phạm)
+  - Validate logic nghiệp vụ theo từng case
+
+---
+
+### 3. Interface Adapters (Controller, Presenter…)
+
+**Mục tiêu**: Kiểm tra điều phối giữa request từ UI → gọi Use Case → response đúng.
+
+- **Loại test**: Unit Test hoặc Integration Test
+- **Cách test**:
+  - Mock `UseCase` khi test `Controller`
+  - Test response trả ra, status code, định dạng JSON...
+- **Tips**:
+  - Có thể test thêm các `Presenter` hoặc `ViewModel` nếu sử dụng pattern đó
+
+---
+
+### 4. Infrastructure (Frameworks & Drivers)
+
+**Mục tiêu**: Kiểm tra các thành phần phụ thuộc bên ngoài như database, file, HTTP client...
+
+- **Loại test**: Integration Test
+- **Cách test**:
+  - Dùng DB test (SQLite in-memory, Testcontainers…)
+  - Dùng các endpoint thật nếu cần
+- **Gợi ý test tools**:
+  - `WebApplicationFactory`: spin up ASP.NET Core cho integration test
+  - `Testcontainers-dotnet`: chạy PostgreSQL, MongoDB thật trong container khi test
+
+---
+
+### Gợi ý thư viện test trong .NET
+
+| Mục đích            | Thư viện phổ biến                               |
+|---------------------|-------------------------------------------------|
+| Unit Testing        | `xUnit`, `NUnit`, `MSTest`                      |
+| Mocking             | `Moq`, `NSubstitute`, `FakeItEasy`             |
+| In-memory DB        | `SQLite`, `EF InMemory`                        |
+| Integration Testing | `WebApplicationFactory`, `Testcontainers-dotnet` |
+
 ## Dependency Injection trong ASP.NET Core
+
+### Tổng quan
+
+ASP.NET Core tích hợp sẵn cơ chế Dependency Injection (DI) giúp quản lý lifecycle của các đối tượng, tách biệt giữa lớp triển khai và lớp sử dụng. Điều này đặc biệt hữu ích trong kiến trúc Clean Architecture khi mỗi tầng phụ thuộc qua interface.
+
+---
+
+### Đăng ký DI trong `Program.cs`
+
+Các tầng như Use Case, Repository, Service,… được đăng ký qua interface tương ứng.
+
+```csharp
+builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
+builder.Services.AddScoped<CreateOrderUseCase>();
+```
+### Cách sử dụng trong Controller
+```csharp
+[ApiController]
+[Route("api/orders")]
+public class OrdersController : ControllerBase
+{
+    private readonly CreateOrderUseCase _useCase;
+
+    public OrdersController(CreateOrderUseCase useCase)
+    {
+        _useCase = useCase;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateOrderRequest request)
+    {
+        var id = await _useCase.ExecuteAsync(request);
+        return Ok(new { Id = id });
+    }
+}
+```
+### Gợi ý tổ chức cấu hình DI theo tầng
+- Application Layer: Đăng ký các UseCase / Service
+- Infrastructure Layer: Đăng ký các Repository, External Services
+- Cross-cutting: Logging, Email, FileStorage, etc.
+### Ví dụ file cấu hình DI cho tầng Infrastructure
+```csharp
+public static class InfrastructureDI
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    {
+        services.AddScoped<IOrderRepository, SqlOrderRepository>();
+        services.AddDbContext<AppDbContext>(...);
+        return services;
+    }
+}
+```
+Sau đó gọi trong `Program.cs`:
+
+```csharp
+builder.Services.AddInfrastructure();
+```
 # Các ví dụ minh hoạ
-## Code snippet minh họa flow (từ Controller → Use Case → Entity)
-## Sơ đồ sequence hoặc class diagram
+
+## Code snippet minh hoạ flow từ Controller → Use Case → Entity
+
+```csharp
+// 1. Controller nhận request từ client
+[ApiController]
+[Route("api/orders")]
+public class OrdersController : ControllerBase
+{
+    private readonly CreateOrderUseCase _useCase;
+
+    public OrdersController(CreateOrderUseCase useCase)
+    {
+        _useCase = useCase;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
+    {
+        var orderId = await _useCase.ExecuteAsync(request);
+        return Ok(new { Id = orderId });
+    }
+}
+// 2. Use Case xử lý logic nghiệp vụ cấp ứng dụng
+public class CreateOrderUseCase
+{
+    private readonly IOrderRepository _orderRepository;
+
+    public CreateOrderUseCase(IOrderRepository orderRepository)
+    {
+        _orderRepository = orderRepository;
+    }
+
+    public async Task<Guid> ExecuteAsync(CreateOrderRequest request)
+    {
+        var order = new Order(request.CustomerId);
+        foreach (var item in request.Items)
+        {
+            order.AddItem(item.ProductId, item.Quantity, item.Price);
+        }
+
+        await _orderRepository.AddAsync(order);
+        return order.Id;
+    }
+}
+// 3. Entity chứa logic nghiệp vụ cốt lõi
+public class Order
+{
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public Guid CustomerId { get; private set; }
+    public List<OrderItem> Items { get; private set; } = new();
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+    public Order(Guid customerId)
+    {
+        CustomerId = customerId;
+    }
+
+    public void AddItem(Guid productId, int quantity, decimal price)
+    {
+        Items.Add(new OrderItem(productId, quantity, price));
+    }
+
+    public decimal TotalAmount => Items.Sum(i => i.Price * i.Quantity);
+}
+
+```
+
+## Sơ đồ minh hoạ (Sequence Diagram)
+```csharp
+sequenceDiagram
+    participant Client
+    participant Controller
+    participant UseCase
+    participant Entity
+    participant Repository
+
+    Client->>Controller: POST /api/orders
+    Controller->>UseCase: ExecuteAsync(request)
+    UseCase->>Entity: new Order(...), AddItem(...)
+    UseCase->>Repository: AddAsync(order)
+    Repository-->>UseCase: Success
+    UseCase-->>Controller: return OrderId
+    Controller-->>Client: 200 OK (OrderId)
+```
+## Class Diagram (simplified)
+```csharp
+classDiagram
+    class OrdersController {
+        +CreateOrderUseCase useCase
+        +CreateOrder(request)
+    }
+
+    class CreateOrderUseCase {
+        +IOrderRepository orderRepository
+        +ExecuteAsync(request)
+    }
+
+    class Order {
+        +Guid Id
+        +Guid CustomerId
+        +List~OrderItem~ Items
+        +AddItem(...)
+        +TotalAmount
+    }
+
+    class IOrderRepository {
+        +AddAsync(order)
+    }
+
+    OrdersController --> CreateOrderUseCase
+    CreateOrderUseCase --> IOrderRepository
+    CreateOrderUseCase --> Order
+    Order --> OrderItem
+```
+
 # Kết luận & Hướng triển khai
+
 ## Các bước “bật đèn xanh” cho dự án .NET mới
+
+1. **Phân tích yêu cầu và xác định các Use Case chính**  
+   → Tập trung vào nghiệp vụ, tránh phụ thuộc sớm vào công nghệ.
+
+2. **Thiết kế cấu trúc Solution theo Clean Architecture**  
+   → Tách rõ các tầng: `Domain`, `Application`, `Infrastructure`, `Web`.
+
+3. **Định nghĩa các Entity và Use Case cốt lõi**  
+   → Entity không phụ thuộc framework, chứa logic nghiệp vụ bền vững.  
+   → Use Case xử lý orchestration logic, điều phối các bước nghiệp vụ.
+
+4. **Thiết lập Dependency Injection và Repository Pattern**  
+   → Sử dụng interface ở tầng trong, triển khai ở tầng ngoài.  
+   → Đảm bảo nguyên tắc Dependency Rule.
+
+5. **Viết test cho từng tầng ngay từ đầu**  
+   → Unit test cho UseCase, Entity.  
+   → Integration test cho Infrastructure, Controller.
+
+6. **Dùng template uy tín (Jason Taylor, Ardalis)**  
+   → Khởi tạo project chuẩn, tiết kiệm thời gian setup ban đầu.
+
+---
+
 ## Lộ trình tiếp theo: refactor, mở rộng, tích hợp AI
+
+ **Giai đoạn 1 – Ổn định kiến trúc**
+- Review codebase theo Clean Architecture.
+- Refactor các module logic đang bị chồng chéo.
+- Viết test để bảo vệ business logic.
+
+ **Giai đoạn 2 – Mở rộng & tích hợp**
+- Mở rộng thêm các tính năng theo Use Case.
+- Tách nhỏ các service nếu cần scale.
+- Bắt đầu áp dụng Microservice (nếu cần thiết).
+
+ **Giai đoạn 3 – Tích hợp AI / dịch vụ thông minh**
+- Tích hợp AI (OpenAI, Azure Cognitive...) ở tầng Application hoặc Infrastructure.
+- Xử lý thông minh như: gợi ý, phân tích dữ liệu, NLP, chatbot...
+
+---
+
+
