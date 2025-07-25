@@ -162,21 +162,31 @@ public class Order
 - Là nền tảng ổn định nhất, nơi các tầng khác (Use Cases, Adapters, Frameworks) đều phụ thuộc vào.
 - Đảm bảo hệ thống phản ánh đúng các quy tắc nghiệp vụ, không chỉ đơn thuần là thao tác dữ liệu.
 
-## Use Cases / Application
+## Use Cases / Application Layer
 ### Định nghĩa
-Use Cases (hay còn gọi là Application Layer) là tầng chịu trách nhiệm triển khai các quy trình nghiệp vụ cụ thể của hệ thống.
-Nó sử dụng các Entities để thực hiện nghiệp vụ, nhưng không biết gì về UI, database, hay framework bên ngoài.
+
+Use Cases (hay còn gọi là Application Layer) là tầng chịu trách nhiệm triển khai các **quy trình nghiệp vụ cụ thể** của hệ thống.  
+Tầng này sử dụng các `Entities` để thực hiện nghiệp vụ, nhưng **không biết gì về UI, database hay framework bên ngoài**.
+
+---
 
 ### Chức năng chính
-    • Thực thi các hành động cụ thể như: “Tạo đơn hàng”, “Xử lý thanh toán”, “Gửi email xác nhận”...
-    • Đóng vai trò "điều phối viên" giữa các tầng, gọi repository, kiểm tra điều kiện nghiệp vụ, trả kết quả cho tầng ngoài (Controller/API).
+
+- Thực thi các hành động nghiệp vụ như: “Tạo đơn hàng”, “Xử lý thanh toán”, “Gửi email xác nhận”,...
+- Đóng vai trò như một "điều phối viên" giữa các tầng: gọi repository, kiểm tra logic nghiệp vụ, xử lý kết quả và trả về tầng ngoài (API/Controller).
+
+---
 
 ### Đặc điểm
-    • Phụ thuộc vào Entities, nhưng không phụ thuộc vào tầng UI hoặc tầng dữ liệu.
-    • Chứa logic nghiệp vụ ở cấp ứng dụng, chứ không phải logic nghiệp vụ cốt lõi như Entities.
-    • Các hành động thường được viết thành service, command handler, hoặc interactor.
+
+- Phụ thuộc vào `Entities`, nhưng **không phụ thuộc vào UI hoặc tầng dữ liệu**.
+- Chứa logic nghiệp vụ ở cấp ứng dụng, không phải logic nghiệp vụ cốt lõi.
+- Các hành động thường được viết thành **service**, **command handler** hoặc **interactor**.
+
+---
 
 ### Ví dụ
+
 ```csharp
 public class CreateOrderUseCase
 {
@@ -199,11 +209,12 @@ public class CreateOrderUseCase
         return order.Id;
     }
 }
+
 ```
 
 ### Vai trò trong hệ thống
-    • Là cầu nối giữa logic nghiệp vụ (Entities) và thế giới bên ngoài (UI, DB, API).
-    • Giúp hệ thống có thể thay đổi UI hay database mà không ảnh hưởng đến logic xử lý nghiệp vụ.
+- Là cầu nối giữa logic nghiệp vụ (Entities) và thế giới bên ngoài (UI, DB, API).
+- Giúp hệ thống có thể thay đổi UI hay database mà không ảnh hưởng đến logic xử lý nghiệp vụ.
 
 ## Interface Adapters (Controllers, Gateways, Presenters)
 ### Định nghĩa
