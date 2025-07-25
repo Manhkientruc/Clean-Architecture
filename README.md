@@ -221,14 +221,14 @@ public class CreateOrderUseCase
 Interface Adapters là tầng chuyển đổi dữ liệu và điều phối giao tiếp giữa hệ thống bên trong và bên ngoài.
 Nó đóng vai trò “trung gian dịch thuật” giữa các Use Case và công nghệ như Web API, cơ sở dữ liệu, hoặc UI.
 ### Chức năng chính
-    • Nhận dữ liệu từ UI/API, chuyển thành dạng mà Use Case có thể xử lý (Input DTO).
-    • Gọi các Use Case để xử lý logic nghiệp vụ.
-    • Chuyển kết quả từ Use Case thành dữ liệu phù hợp để trả ra ngoài (ViewModel, JSON…).
-    • Giao tiếp với database qua interface repository (thường là implementation của IGateway hoặc IRepository).
+- Nhận dữ liệu từ UI/API, chuyển thành dạng mà Use Case có thể xử lý (Input DTO).
+- Gọi các Use Case để xử lý logic nghiệp vụ.
+- Chuyển kết quả từ Use Case thành dữ liệu phù hợp để trả ra ngoài (ViewModel, JSON…).
+- Giao tiếp với database qua interface repository (thường là implementation của IGateway hoặc IRepository).
 ### Thành phần thường có
-    • Controllers: nhận request từ phía người dùng (API, Web).
-    • Gateways (Repositories): triển khai giao tiếp với cơ sở dữ liệu hoặc service bên ngoài.
-    • Presenters / View Models: chuẩn bị dữ liệu để trả về UI hoặc API response.
+- Controllers: nhận request từ phía người dùng (API, Web).
+- Gateways (Repositories): triển khai giao tiếp với cơ sở dữ liệu hoặc service bên ngoài.
+- Presenters / View Models: chuẩn bị dữ liệu để trả về UI hoặc API response.
 ### Ví dụ
 1. Controllers
 ```csharp
@@ -268,28 +268,28 @@ public class OrderRepository : IOrderRepository
 ```
 
 ### Vai trò trong hệ thống
-Đảm bảo tầng trong (Application, Entities) không bị phụ thuộc vào các công nghệ bên ngoài như ASP.NET, EF Core, hay các API cụ thể.
-Dễ dàng thay đổi giao diện (UI, Web API) hay thay đổi hạ tầng (database) mà không ảnh hưởng đến logic cốt lõi.
+- Đảm bảo tầng trong (Application, Entities) không bị phụ thuộc vào các công nghệ bên ngoài như ASP.NET, EF Core, hay các API cụ thể.
+- Dễ dàng thay đổi giao diện (UI, Web API) hay thay đổi hạ tầng (database) mà không ảnh hưởng đến logic cốt lõi.
 
 ## Frameworks & Drivers (UI, DB, External APIs)
 ### Định nghĩa
-Frameworks & Drivers là tầng ngoài cùng trong Clean Architecture, nơi chứa các thành phần cụ thể phụ thuộc vào công nghệ, chẳng hạn như:
-Giao diện người dùng (Web UI, Blazor, Razor Pages…)
-Framework backend (ASP.NET Core)
-Database (SQL Server, MongoDB, PostgreSQL…)
-Các dịch vụ bên ngoài (REST API, Message Queue, Email, File Storage, v.v.)
+- Frameworks & Drivers là tầng ngoài cùng trong Clean Architecture, nơi chứa các thành phần cụ thể phụ thuộc vào công nghệ, chẳng hạn như:
+        Giao diện người dùng (Web UI, Blazor, Razor Pages…)
+        Framework backend (ASP.NET Core)
+        Database (SQL Server, MongoDB, PostgreSQL…)
+        Các dịch vụ bên ngoài (REST API, Message Queue, Email, File Storage, v.v.)
 
 ### Đặc điểm chính
-Đây là nơi "đi vào và đi ra" của hệ thống, chịu trách nhiệm giao tiếp với thế giới bên ngoài.
-Phụ thuộc vào các tầng bên trong, không được để tầng bên trong phụ thuộc lại.
-Thường xuyên thay đổi theo yêu cầu công nghệ, nhưng logic cốt lõi không bị ảnh hưởng.
+- Đây là nơi "đi vào và đi ra" của hệ thống, chịu trách nhiệm giao tiếp với thế giới bên ngoài.
+- Phụ thuộc vào các tầng bên trong, không được để tầng bên trong phụ thuộc lại.
+- Thường xuyên thay đổi theo yêu cầu công nghệ, nhưng logic cốt lõi không bị ảnh hưởng.
 
 ### Chức năng chính
-Giao tiếp và triển khai cụ thể các cổng (gateways) được định nghĩa bởi tầng Application (Use Case).
-Ví dụ:
-ASP.NET Controller nằm ở đây, nhưng phụ thuộc vào interface ở Application.
-Entity Framework DbContext nằm ở đây, triển khai repository interface của tầng trên.
-Giao diện frontend (React, Angular) có thể gọi vào tầng Web API ở tầng này.
+- Giao tiếp và triển khai cụ thể các cổng (gateways) được định nghĩa bởi tầng Application (Use Case).
+- Ví dụ:
+    ASP.NET Controller nằm ở đây, nhưng phụ thuộc vào interface ở Application.
+    Entity Framework DbContext nằm ở đây, triển khai repository interface của tầng trên.
+    Giao diện frontend (React, Angular) có thể gọi vào tầng Web API ở tầng này.
 ### Ví dụ
 ```csharp
 public class SqlOrderRepository : IOrderRepository
@@ -305,53 +305,50 @@ public class SqlOrderRepository : IOrderRepository
 ```
 
 ### Vai trò trong hệ thống
-Là nơi cắm công nghệ vào hệ thống, nhưng theo cách có kiểm soát.
-Cho phép thay thế dễ dàng: từ EF → Dapper, hoặc từ REST → gRPC mà không động đến business logic.
+- Là nơi cắm công nghệ vào hệ thống, nhưng theo cách có kiểm soát.
+- Cho phép thay thế dễ dàng: từ EF → Dapper, hoặc từ REST → gRPC mà không động đến business logic.
 
 # Nguyên tắc phụ thuộc (Dependency Rule)
 ## Luồng phụ thuộc từ “ngoài vào trong”
 ### Định nghĩa
-Dependency Rule là nguyên tắc cốt lõi trong Clean Architecture, quy định rằng các tầng bên ngoài có thể phụ thuộc vào tầng bên trong, nhưng tầng bên trong tuyệt đối không được phụ thuộc ngược lại.
+- Dependency Rule là nguyên tắc cốt lõi trong Clean Architecture, quy định rằng các tầng bên ngoài có thể phụ thuộc vào tầng bên trong, nhưng tầng bên trong tuyệt đối không được phụ thuộc ngược lại.
 
 ### Luồng phụ thuộc
-Luồng phụ thuộc trong Clean Architecture luôn đi theo hướng:
-Frameworks & Drivers → Interface Adapters → Use Cases → Entities
-Nghĩa là:
+- Luồng phụ thuộc trong Clean Architecture luôn đi theo hướng:
+- Frameworks & Drivers → Interface Adapters → Use Cases → Entities
+- Nghĩa là:
     Use Cases có thể gọi Entities.
     Interface Adapters có thể gọi Use Cases.
     Frameworks có thể gọi Controller, Repository, Service ở tầng Adapter.
     Nhưng không bao giờ ngược lại.
 
 ### Ý nghĩa
-Entities và Use Cases không được biết gì về web, database, hay giao diện người dùng.
-Giúp hệ thống tách biệt hoàn toàn logic nghiệp vụ với công nghệ cụ thể.
-Khi cần thay đổi công nghệ (ví dụ: từ ASP.NET MVC sang Blazor), bạn chỉ cần sửa các lớp ở tầng ngoài mà không ảnh hưởng đến logic bên trong.
+- Entities và Use Cases không được biết gì về web, database, hay giao diện người dùng.
+- Giúp hệ thống tách biệt hoàn toàn logic nghiệp vụ với công nghệ cụ thể.
+- Khi cần thay đổi công nghệ (ví dụ: từ ASP.NET MVC sang Blazor), bạn chỉ cần sửa các lớp ở tầng ngoài mà không ảnh hưởng đến logic bên trong.
 
 ### Ví dụ minh hoạ
-Giả sử có class OrderController ở tầng Web (Frameworks), gọi vào CreateOrderUseCase ở tầng Application:
+- Giả sử có class OrderController ở tầng Web (Frameworks), gọi vào CreateOrderUseCase ở tầng Application:
 
 ```csharp
 var orderId = await _createOrderUseCase.ExecuteAsync(request);
 ```
 
-Ngược lại, bạn không được viết logic trong Use Case kiểu như:
+- Ngược lại, bạn không được viết logic trong Use Case kiểu như:
 
 ```csharp
 var result = _dbContext.Orders.ToList();
 ```
 
 ### Giải pháp để giữ đúng nguyên tắc
-Dùng interface (abstraction) để định nghĩa hành vi cần thiết (ví dụ: IOrderRepository).
-Các tầng trong chỉ gọi qua interface.
-Tầng ngoài chịu trách nhiệm triển khai interface (ví dụ: OrderRepository : IOrderRepository).
+- Dùng interface (abstraction) để định nghĩa hành vi cần thiết (ví dụ: IOrderRepository).
+- Các tầng trong chỉ gọi qua interface.
+- Tầng ngoài chịu trách nhiệm triển khai interface (ví dụ: OrderRepository : IOrderRepository).
 
 ## Tầng trong không biết gì về tầng ngoài
-Tới luôn phần này – **“Tầng trong không biết gì về tầng ngoài”** – là một trong những điểm mấu chốt làm nên sự “sạch sẽ” của Clean Architecture.
-Dưới đây là nội dung rõ ràng – chặt chẽ – dễ hiểu để bạn đưa vào Word hoặc README:
+- **“Tầng trong không biết gì về tầng ngoài”** – là một trong những điểm mấu chốt làm nên sự “clean” của Clean Architecture.
 
 ---
-
-## Tầng trong không biết gì về tầng ngoài
 
 ### Nguyên tắc cốt lõi
 
@@ -412,15 +409,407 @@ public class SqlOrderRepository : IOrderRepository
 EF Core được sử dụng chỉ ở tầng ngoài (Frameworks & Drivers).
 
 # Ưu & nhược điểm
-## Ưu điểm: maintainable, testable, scalable…
-## Nhược điểm: learning curve, boilerplate ban đầu
+## Ưu điểm của Clean Architecture
+
+Clean Architecture mang lại nhiều lợi ích trong việc thiết kế và xây dựng hệ thống phần mềm hiện đại, đặc biệt là các hệ thống quy mô lớn hoặc yêu cầu bảo trì lâu dài.
+
+---
+
+### 1. Dễ bảo trì (Maintainable)
+
+- Kiến trúc phân tầng rõ ràng giúp dễ xác định vị trí cần chỉnh sửa.
+- Khi thêm tính năng hoặc sửa lỗi, chỉ cần làm việc trong đúng tầng liên quan, giảm rủi ro ảnh hưởng đến toàn hệ thống.
+
+---
+
+### 2. Dễ kiểm thử (Testable)
+
+- Các tầng bên trong như `Entities` và `Use Cases` không phụ thuộc vào công nghệ bên ngoài → có thể kiểm thử độc lập.
+- Dễ viết unit test, ít cần mock, tăng độ tin cậy khi triển khai CI/CD.
+
+---
+
+### 3. Dễ mở rộng (Scalable)
+
+- Dễ dàng thêm tính năng mới hoặc thay đổi logic nghiệp vụ mà không ảnh hưởng đến cấu trúc tổng thể.
+- Có thể mở rộng hệ thống theo chiều ngang bằng cách tách các module riêng biệt.
+
+---
+
+### 4. Tái sử dụng cao (Reusable)
+
+- Các thành phần như logic nghiệp vụ hoặc validation có thể tái sử dụng trong nhiều ứng dụng (Web, API, Mobile...).
+- Thiết kế theo kiểu interface giúp dễ dàng plug-in hoặc swap module.
+
+---
+
+### 5. Giảm phụ thuộc vào công nghệ (Technology-Agnostic)
+
+- Logic nghiệp vụ không bị gắn chặt với framework, UI hay database cụ thể.
+- Dễ dàng thay đổi công nghệ (VD: chuyển từ EF Core sang Dapper, từ REST sang gRPC) mà không ảnh hưởng tới logic cốt lõi.
+
+---
+
+### 6. Hỗ trợ làm việc nhóm hiệu quả
+
+- Nhóm phát triển có thể phân chia công việc theo tầng: UI, Application, Infrastructure.
+- Giảm xung đột merge, tăng hiệu quả review code và phát triển song song.
+
+---
+
+## Nhược điểm của Clean Architecture
+
+Mặc dù Clean Architecture mang lại nhiều lợi ích lâu dài, nhưng cũng tồn tại một số nhược điểm, đặc biệt ở giai đoạn khởi đầu của dự án.
+
+---
+
+### 1. Đòi hỏi thời gian học (Learning Curve)
+
+- Với những người mới bắt đầu, việc hiểu và áp dụng đầy đủ mô hình Clean Architecture có thể gây bối rối.
+- Cần hiểu rõ các khái niệm như: phân tầng, nguyên tắc phụ thuộc (Dependency Rule), Interface vs Implementation,...
+
+---
+
+### 2. Cấu trúc ban đầu phức tạp (Boilerplate)
+
+- Cần tạo nhiều file, folder, interface chỉ để triển khai một chức năng đơn giản.
+- Khối lượng “code khung” lớn hơn so với các mô hình đơn giản như MVC.
+
+---
+
+### 3. Tốn effort cho dự án nhỏ
+
+- Với các ứng dụng nhỏ hoặc prototype, việc áp dụng đầy đủ Clean Architecture có thể gây dư thừa.
+- Đôi khi không cần chia quá nhiều tầng, vì chi phí tổ chức cao hơn lợi ích mang lại.
+
+---
+
+### 4. Dễ áp dụng sai nếu không hiểu bản chất
+
+- Một số team chỉ áp dụng về mặt cấu trúc thư mục mà không tuân thủ đúng nguyên tắc phụ thuộc.
+- Điều này dẫn đến "giả Clean Architecture" – trông có vẻ sạch, nhưng thực chất vẫn spaghetti code bên trong.
+
+---
+
 # So sánh với các kiến trúc khác
-## MVC / Layered Architecture
+
+## Clean Architecture vs MVC / Layered Architecture
+
+---
+
+### 1. Mô hình MVC / Layered truyền thống
+
+**Mô tả:**
+- Gồm các tầng: `Controller` → `Service` → `Repository` → `Database`.
+- Logic nghiệp vụ thường nằm rải rác trong cả Controller, Service và Repository.
+- Phụ thuộc giữa các tầng là một chiều từ trên xuống: UI → Business → Data.
+
+**Ưu điểm:**
+- Dễ học, phổ biến, phù hợp với ứng dụng đơn giản.
+- Tạo nhanh, ít boilerplate, phù hợp với MVP hoặc demo nhỏ.
+
+**Nhược điểm:**
+- Logic nghiệp vụ dễ bị phân tán (và rò rỉ) vào tầng Controller hoặc Repository.
+- Khó mở rộng khi hệ thống lớn dần.
+- Tầng business vẫn phụ thuộc trực tiếp vào tầng dữ liệu và framework cụ thể.
+
+---
+
+### 2. Clean Architecture
+
+**Mô tả:**
+- Chia thành 4 tầng rõ ràng: `Entities`, `Use Cases`, `Interface Adapters`, `Frameworks & Drivers`.
+- Logic nghiệp vụ được giữ hoàn toàn độc lập với UI, DB hoặc công nghệ ngoài.
+- Mọi phụ thuộc đều đi từ ngoài vào trong (theo Dependency Rule).
+
+**Ưu điểm:**
+- Logic nghiệp vụ tập trung và có thể tái sử dụng.
+- Dễ kiểm thử từng tầng độc lập (unit test friendly).
+- Dễ thay đổi UI, DB, hoặc framework mà không ảnh hưởng đến lõi hệ thống.
+
+**Nhược điểm:**
+- Phức tạp hơn để bắt đầu, nhất là với ứng dụng nhỏ.
+- Cần nhiều file, folder, interface (boilerplate).
+
+---
+
+### 3. Tóm tắt so sánh
+
+| Tiêu chí                   | MVC / Layered               | Clean Architecture                |
+|----------------------------|------------------------------|------------------------------------|
+| Cấu trúc phân tầng         | Cơ bản (3–4 tầng)            | Rõ ràng (4 tầng tách biệt)         |
+| Tính độc lập nghiệp vụ     | Thấp                         | Cao                                |
+| Tính mở rộng               | Trung bình                   | Cao                                |
+| Dễ kiểm thử                | Khó khi logic phụ thuộc nhiều| Dễ kiểm thử từng phần              |
+| Phụ thuộc công nghệ        | Có                           | Hạn chế tối đa                     |
+| Dễ bắt đầu với dự án nhỏ   | Dễ                           | Có thể dư thừa                     |
+| Áp dụng cho hệ thống lớn   | Bắt đầu khó khăn             | Phù hợp về lâu dài                 |
+
+---
+
+**Kết luận:**  
+- Với các hệ thống nhỏ hoặc prototype, MVC có thể là lựa chọn hợp lý do tính đơn giản.
+- Với hệ thống lớn, phức tạp hoặc cần bảo trì lâu dài, Clean Architecture là lựa chọn ưu việt hơn vì tính tách biệt và khả năng kiểm soát cao.
+
+
 ## Onion Architecture
-## Hexagonal (Ports & Adapters)
+
+---
+
+### 1. Định nghĩa
+
+**Onion Architecture** là một mô hình kiến trúc phần mềm được giới thiệu bởi Jeffrey Palermo.  
+Mục tiêu chính là **bảo vệ logic nghiệp vụ** bằng cách đặt nó ở trung tâm của kiến trúc và bao quanh bởi các lớp phụ thuộc.
+
+---
+
+### 2. Cấu trúc lớp (Layers)
+
+- **Core (trung tâm):** Domain Models (Entities), Business Logic.
+- **Application Services:** Xử lý các use case, workflow.
+- **Interfaces (Adapters):** Giao tiếp với thế giới bên ngoài như UI, DB, API.
+- **Infrastructure:** Thư viện, framework, hệ thống bên ngoài (EF, SMTP, HTTP...).
+
+Các lớp được tổ chức giống như các **vòng tròn của củ hành**, với logic nghiệp vụ ở lõi và các lớp phụ thuộc bao quanh.
+
+---
+
+### 3. Nguyên tắc chính
+
+- Các vòng tròn **chỉ phụ thuộc vào các vòng tròn bên trong**.
+- **Không có lớp nào trong lõi biết gì về lớp bên ngoài.**
+- Giao tiếp thông qua **abstraction (interface)** – được định nghĩa ở trong và triển khai ở ngoài.
+
+---
+
+### 4. So sánh với Clean Architecture
+
+| Tiêu chí                    | Onion Architecture                    | Clean Architecture                      |
+|----------------------------|----------------------------------------|-----------------------------------------|
+| Kiến trúc hình học          | Các vòng tròn đồng tâm (Onion)         | Các vòng tròn hoặc hình chữ nhật phân tầng |
+| Định hướng phụ thuộc        | Ngoài → Trong                         | Ngoài → Trong                           |
+| Tách biệt logic nghiệp vụ   | Có                                     | Có                                      |
+| Tầng Use Cases riêng biệt   | Không rõ ràng (thường gộp vào Services)| Rõ ràng (Use Case Layer riêng)         |
+| Giao tiếp giữa tầng         | Interface/DI                          | Interface/DI                            |
+| Tính linh hoạt              | Cao                                   | Rất cao                                 |
+
+---
+
+### 5. Khi nào dùng Onion Architecture?
+
+- Khi muốn **bảo vệ domain logic khỏi thay đổi công nghệ**, nhưng chưa cần kiến trúc quá tách biệt như Clean Architecture.
+- Phù hợp với các hệ thống **trung bình đến lớn**, nhưng chưa có yêu cầu chia tầng Use Case chi tiết.
+
+---
+
+## Hexagonal Architecture (Ports & Adapters)
+
+---
+
+### 1. Định nghĩa
+
+**Hexagonal Architecture**, còn gọi là **Ports & Adapters**, được đề xuất bởi Alistair Cockburn.  
+Mục tiêu của kiến trúc này là **tách biệt hệ thống lõi (core logic)** với các tác nhân bên ngoài (UI, DB, API...) bằng cách sử dụng các cổng (ports) và bộ chuyển đổi (adapters).
+
+---
+
+### 2. Thành phần chính
+
+- **Application Core:** Chứa logic nghiệp vụ và định nghĩa các `ports` (interfaces).
+- **Ports:** Là các interface mà core định nghĩa để giao tiếp với bên ngoài (VD: `IOrderRepository`, `INotificationService`...).
+- **Adapters:** Là phần triển khai các `ports`, ví dụ như Web Controllers, Database Repositories, File Readers...
+- **Drivers:** Các thành phần gọi vào hệ thống, như HTTP requests, CLI, scheduled jobs,...
+
+---
+
+### 3. Nguyên tắc
+
+- **Core logic không biết gì về cách hệ thống được sử dụng** (qua web, mobile hay CLI).
+- Mọi tương tác đều đi qua `ports`, được inject bằng `adapters`.
+- Hệ thống có thể được test dễ dàng bằng cách thay thế adapter thật bằng adapter giả (mock/fake).
+
+---
+
+### 4. So sánh với Clean Architecture
+
+| Tiêu chí                          | Hexagonal Architecture                 | Clean Architecture              |
+|-----------------------------------|----------------------------------------|---------------------------------|
+| Khái niệm trung tâm               | Ports (interface) & Adapters           | Entities, Use Cases, Adapters   |
+| Luồng phụ thuộc                   | Ngoài → Trong                          | Ngoài → Trong                   |
+| Use Cases riêng biệt              | Không phân tầng rõ                     | Có tầng Use Cases riêng         |
+| Kiến trúc hình học                | Hình lục giác, không tập trung vào lớp | Vòng tròn/lớp rõ ràng hơn       |
+| Phù hợp với dịch vụ hướng sự kiện | Tốt (dễ tích hợp MQ, CLI, webhook)     | Tốt                             |
+
+---
+
+### 5. Khi nào dùng Hexagonal Architecture?
+
+- Khi cần xây dựng hệ thống **hướng cổng vào (entry points)** linh hoạt: HTTP, CLI, Message Queue,...
+- Khi muốn hệ thống dễ tích hợp với nhiều loại input/output khác nhau (modular).
+- Khi chú trọng **testing**: mock được tất cả adapter bên ngoài một cách dễ dàng.
+
+---
+
 # Áp dụng trong .NET
+
 ## Cấu trúc thư mục & project solution
-## Ví dụ interface, DTO, service, repository
+
+Khi áp dụng Clean Architecture trong .NET, chúng ta thường tổ chức solution thành **nhiều project riêng biệt**, mỗi project đại diện cho một tầng kiến trúc.  
+Điều này giúp **tách biệt rõ ràng các phần trong hệ thống**, và đảm bảo nguyên tắc phụ thuộc (Dependency Rule) được thực thi đúng.
+
+---
+
+### 1. Cấu trúc project tổng thể
+/src
+├── MyApp.Domain --> Entities (Domain models, business rules)
+├── MyApp.Application --> Use Cases (Application services, interfaces)
+├── MyApp.Infrastructure --> Implementation (EF Core, EmailService, etc.)
+├── MyApp.WebAPI --> Web layer (Controllers, API endpoints)
+
+> Mỗi project là một tầng riêng biệt, chỉ được phép phụ thuộc vào các tầng bên trong nó.
+
+---
+
+### 2. Mô tả vai trò từng project
+
+| Project                | Vai trò chính                                                                 |
+|------------------------|--------------------------------------------------------------------------------|
+| `MyApp.Domain`         | Chứa các Entity, Enum, Value Object, Domain Event,…                           |
+| `MyApp.Application`    | Chứa các Use Cases, DTO, interface repository/service,…                       |
+| `MyApp.Infrastructure`| Triển khai các interface từ Application (Repository, EmailService, Cache...) |
+| `MyApp.WebAPI`         | Web layer – nơi đặt Controller, Middleware, API endpoint,…                    |
+
+---
+
+### 3. Dependency flow (phụ thuộc đúng hướng)
+WebAPI → Application → Domain
+↘
+Infrastructure
+
+- `WebAPI` gọi `Application` qua interface.
+- `Infrastructure` triển khai interface từ `Application`, nhưng **không ngược lại**.
+- `Domain` không phụ thuộc vào bất kỳ tầng nào.
+
+---
+
+### 4. Các nguyên tắc khi tổ chức project
+
+- **Không được để Application phụ thuộc vào Infrastructure.**
+- Interface (port) nên đặt ở `Application`, còn implementation (adapter) nằm ở `Infrastructure`.
+- Dùng **Dependency Injection** trong WebAPI để inject các service từ tầng ngoài vào tầng trong.
+- Hạn chế đưa code xử lý logic nghiệp vụ vào Controller hoặc lớp service ở WebAPI.
+
+---
+
+## Ví dụ: Interface, DTO, Service và Repository
+
+Khi áp dụng Clean Architecture, mỗi tầng sẽ giữ một phần trách nhiệm riêng. Dưới đây là ví dụ cụ thể minh hoạ cách tổ chức các phần như `interface`, `DTO`, `service`, `repository` đúng chuẩn.
+
+---
+
+### 1. Interface (Application Layer)
+
+Ở tầng Application, ta định nghĩa các interface (port) để giao tiếp với tầng hạ tầng (infrastructure), ví dụ:
+
+```csharp
+// Application/Interfaces/IOrderRepository.cs
+public interface IOrderRepository
+{
+    Task<Order> GetByIdAsync(Guid id);
+    Task AddAsync(Order order);
+}
+```
+
+### 2. DTO (Data Transfer Object)
+DTO dùng để truyền dữ liệu từ tầng ngoài vào tầng Application (thường được mapping thành entity bên trong):
+```csharp
+// Application/DTOs/CreateOrderRequest.cs
+public class CreateOrderRequest
+{
+    public Guid CustomerId { get; set; }
+    public List<OrderItemDto> Items { get; set; }
+}
+
+public class OrderItemDto
+{
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+}
+```
+### 3. Service / Use Case Handler (Application Layer)
+Một Use Case có thể viết thành một service riêng để xử lý luồng nghiệp vụ:
+```csharp
+// Application/UseCases/CreateOrderUseCase.cs
+public class CreateOrderUseCase
+{
+    private readonly IOrderRepository _orderRepository;
+
+    public CreateOrderUseCase(IOrderRepository orderRepository)
+    {
+        _orderRepository = orderRepository;
+    }
+
+    public async Task<Guid> ExecuteAsync(CreateOrderRequest request)
+    {
+        var order = new Order(request.CustomerId);
+        foreach (var item in request.Items)
+        {
+            order.AddItem(item.ProductId, item.Quantity, item.Price);
+        }
+
+        await _orderRepository.AddAsync(order);
+        return order.Id;
+    }
+}
+```
+### 4. Repository Implementation (Infrastructure Layer)
+Tầng hạ tầng sẽ triển khai interface từ Application Layer:
+```csharp
+// Infrastructure/Repositories/OrderRepository.cs
+public class OrderRepository : IOrderRepository
+{
+    private readonly AppDbContext _context;
+
+    public async Task<Order> GetByIdAsync(Guid id)
+    {
+        return await _context.Orders
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == id);
+    }
+
+    public async Task AddAsync(Order order)
+    {
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+    }
+}
+```
+
+### 5. Kết nối với WebAPI
+Controller sẽ gọi vào Use Case đã inject qua DI container:
+```csharp
+// WebAPI/Controllers/OrdersController.cs
+[ApiController]
+[Route("api/orders")]
+public class OrdersController : ControllerBase
+{
+    private readonly CreateOrderUseCase _createOrderUseCase;
+
+    public OrdersController(CreateOrderUseCase createOrderUseCase)
+    {
+        _createOrderUseCase = createOrderUseCase;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateOrderRequest request)
+    {
+        var orderId = await _createOrderUseCase.ExecuteAsync(request);
+        return Ok(new { Id = orderId });
+    }
+}
+```
+
 ## Thư viện & template nổi bật (Jason Taylor, Ardalis)
 # Best Practices & Tips
 ## Organization: tên project, naming convention
