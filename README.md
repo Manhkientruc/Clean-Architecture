@@ -119,23 +119,28 @@ Tạm dịch:
 
 
 # Các tầng (Layers) chính
+
 ## Entities (Domain Models)
+
 ### Định nghĩa
-    Entities là tầng sâu nhất và quan trọng nhất trong Clean Architecture.
-    Nó chứa các đối tượng cốt lõi mô tả nghiệp vụ (business objects) và quy tắc nghiệp vụ cấp cao (enterprise rules).
+
+`Entities` là tầng sâu nhất và quan trọng nhất trong Clean Architecture.  
+Nó chứa các đối tượng cốt lõi mô tả nghiệp vụ (**business objects**) và các quy tắc nghiệp vụ cấp cao (**enterprise rules**).
 
 ### Đặc điểm chính
-    • Độc lập hoàn toàn với bất kỳ công nghệ nào như framework, database, UI.
-    • Không phụ thuộc vào bất kỳ tầng nào khác trong hệ thống.
-    • Là nơi giữ logic nghiệp vụ bền vững, có thể tồn tại trong nhiều năm dù các công nghệ khác có thay đổi.
+
+- Độc lập hoàn toàn với bất kỳ công nghệ nào như framework, database, hay UI.
+- Không phụ thuộc vào bất kỳ tầng nào khác trong hệ thống.
+- Là nơi lưu trữ logic nghiệp vụ bền vững, có thể tồn tại trong nhiều năm dù công nghệ thay đổi.
 
 ### Ví dụ
-Giả sử đang xây dựng hệ thống quản lý đơn hàng, thì Order, Customer, Product có thể là các entity.
-Mỗi entity có thể chứa:
-    • Thuộc tính: 
-    ```csharp OrderId, CustomerId, TotalAmount,… ```
-    • Quy tắc nghiệp vụ: ví dụ 
-    ```csharp Order.CalculateTotal(), Order.CanBeCancelled(). ```
+
+Giả sử đang xây dựng hệ thống quản lý đơn hàng, thì các entity có thể là: `Order`, `Customer`, `Product`.
+
+Mỗi entity thường bao gồm:
+- **Thuộc tính:** `OrderId`, `CustomerId`, `TotalAmount`,...
+- **Quy tắc nghiệp vụ:** `Order.CalculateTotal()`, `Order.CanBeCancelled()`...
+
 ```csharp
 public class Order
 {
@@ -153,8 +158,9 @@ public class Order
 ```
 
 ### Vai trò trong hệ thống
-    • Là nền tảng ổn định nhất, nơi các tầng khác đều phụ thuộc vào.
-    • Giúp đảm bảo hệ thống phản ánh đúng các quy tắc nghiệp vụ, chứ không chỉ là xử lý dữ liệu.
+
+- Là nền tảng ổn định nhất, nơi các tầng khác (Use Cases, Adapters, Frameworks) đều phụ thuộc vào.
+- Đảm bảo hệ thống phản ánh đúng các quy tắc nghiệp vụ, không chỉ đơn thuần là thao tác dữ liệu.
 
 ## Use Cases / Application
 ### Định nghĩa
