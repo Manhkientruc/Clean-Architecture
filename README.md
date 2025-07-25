@@ -660,11 +660,11 @@ Khi áp dụng Clean Architecture trong .NET, chúng ta thường tổ chức so
 ---
 
 ### 1. Cấu trúc project tổng thể
-/src
- ../MyApp.Domain --> Entities (Domain models, business rules)
- ../ MyApp.Application --> Use Cases (Application services, interfaces)
- ../ MyApp.Infrastructure --> Implementation (EF Core, EmailService, etc.)
- ../ MyApp.WebAPI --> Web layer (Controllers, API endpoints)
+- /src
+    - ../ MyApp.Domain --> Entities (Domain models, business rules)
+    - ../ MyApp.Application --> Use Cases (Application services, interfaces)
+    - ../ MyApp.Infrastructure --> Implementation (EF Core, EmailService, etc.)
+    - ../ MyApp.WebAPI --> Web layer (Controllers, API endpoints)
 
 > Mỗi project là một tầng riêng biệt, chỉ được phép phụ thuộc vào các tầng bên trong nó.
 
