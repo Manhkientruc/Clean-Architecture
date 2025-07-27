@@ -1,0 +1,17 @@
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Infrastructure.deps.json
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Infrastructure.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Infrastructure.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Application.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Domain.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Application.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/bin/Debug/net9.0/ProductManagement.Domain.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.csproj.AssemblyReference.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.AssemblyInfoInputs.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.AssemblyInfo.cs
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.csproj.CoreCompileInputs.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductM.6D34A66C.Up2Date
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/refint/ProductManagement.Infrastructure.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ProductManagement.Infrastructure.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Infrastructure/obj/Debug/net9.0/ref/ProductManagement.Infrastructure.dll

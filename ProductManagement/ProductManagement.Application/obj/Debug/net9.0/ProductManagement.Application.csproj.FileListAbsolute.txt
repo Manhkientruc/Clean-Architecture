@@ -1,0 +1,15 @@
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/bin/Debug/net9.0/ProductManagement.Application.deps.json
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/bin/Debug/net9.0/ProductManagement.Application.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/bin/Debug/net9.0/ProductManagement.Application.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/bin/Debug/net9.0/ProductManagement.Domain.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/bin/Debug/net9.0/ProductManagement.Domain.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.csproj.AssemblyReference.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.AssemblyInfoInputs.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.AssemblyInfo.cs
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.csproj.CoreCompileInputs.cache
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductM.070BD2B7.Up2Date
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/refint/ProductManagement.Application.dll
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ProductManagement.Application.pdb
+/home/manh/Desktop/code/ProductManagement/ProductManagement.Application/obj/Debug/net9.0/ref/ProductManagement.Application.dll

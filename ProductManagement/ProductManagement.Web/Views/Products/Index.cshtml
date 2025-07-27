@@ -1,0 +1,30 @@
+@model List<ProductManagement.Web.Models.Product>
+
+<h2>Danh sách sản phẩm</h2>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">+ Thêm sản phẩm</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@product.Id">Sửa</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@product.Id">Xoá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
